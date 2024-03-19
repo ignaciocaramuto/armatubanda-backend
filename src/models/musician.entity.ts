@@ -20,41 +20,41 @@ import { Career } from "./career.entity.js";
 
 @Entity()
 export class Musician extends BaseEntity {
-  @Property({ nullable: false })
+  @Property()
   email!: string;
 
-  @Property({ nullable: false })
+  @Property()
   password!: string;
 
   @Enum(() => Role)
   role!: Role;
 
   @Property()
-  isProfileSet?: boolean;
+  isProfileSet!: boolean;
 
   @Property()
-  isEmailConfirmed?: boolean;
+  isEmailConfirmed!: boolean;
 
-  @Property({ nullable: false })
-  firstName!: string;
+  @Property({ nullable: true })
+  firstName?: string;
 
-  @Property({ nullable: false })
-  lastname!: string;
+  @Property({ nullable: true })
+  lastName?: string;
 
-  @Property({ nullable: false })
-  stageName!: string;
+  @Property({ nullable: true })
+  stageName?: string;
 
-  @Property({ nullable: false })
-  birthday!: Date;
+  @Property({ nullable: true })
+  birthday?: Date;
 
-  @Property({ nullable: false })
-  country!: string;
+  @Property({ nullable: true })
+  country?: string;
 
-  @Property({ nullable: false })
-  state!: string;
+  @Property({ nullable: true })
+  state?: string;
 
-  @Property({ nullable: false })
-  city!: string;
+  @Property({ nullable: true })
+  city?: string;
 
   @Property({ nullable: true })
   phoneNumber?: string;
@@ -81,29 +81,32 @@ export class Musician extends BaseEntity {
   })
   genres!: Genre[];
 
-  @Enum(() => Experience)
-  experience!: Experience;
+  @Enum({ items: () => Experience, nullable: true })
+  experience?: Experience;
 
   @OneToMany(() => Career, (career) => career.musician, {
     cascade: [Cascade.ALL],
     nullable: true,
   })
-  career? = new Collection<Comment>(this);
+  career = new Collection<Comment>(this);
 
   @Property({ nullable: true })
   bio?: string;
 
-  @Property({ nullable: false })
-  lookingBands!: boolean;
+  @Property({ nullable: true })
+  lookingBands?: boolean;
 
-  @Property({ nullable: false })
-  lookingMusician!: boolean;
+  @Property({ nullable: true })
+  lookingMusician?: boolean;
 
-  @Property({ nullable: false })
-  available!: boolean;
+  @Property({ nullable: true })
+  available?: boolean;
 
-  @OneToOne(() => Image, (image) => image.musician, { owner: true })
-  image!: Image;
+  @OneToOne(() => Image, (image) => image.musician, {
+    owner: true,
+    nullable: true,
+  })
+  image?: Image;
 
   @OneToMany(() => Comment, (comment) => comment.musician, {
     cascade: [Cascade.ALL],

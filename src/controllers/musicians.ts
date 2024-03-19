@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Musician } from "../models/musician.js";
+import { Musician } from "../models/musician.entity.js";
 
 export class MusicianController {
   static async getAll(req: Request, res: Response) {

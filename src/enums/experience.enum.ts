@@ -1,5 +1,5 @@
 export enum Experience {
-  Amateur = "Amateur",
-  Advanced = "Advanced",
-  Expert = "Expert",
+  AMATEUR = "Amateur",
+  INTERMEDIATE = "Intermediate",
+  EXPERT = "Expert",
 }

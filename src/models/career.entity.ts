@@ -1,0 +1,18 @@
+import { Entity, Property, ManyToOne } from "@mikro-orm/core";
+import { Musician } from "./musician.entity.js";
+import { BaseEntity } from "../shared/db/base-entity.entity.js";
+
+@Entity()
+export class Career extends BaseEntity {
+  @Property()
+  description!: string;
+
+  @Property()
+  startDate!: Date;
+
+  @Property()
+  endDate!: Date;
+
+  @ManyToOne(() => Musician, { nullable: false })
+  musician!: Musician;
+}

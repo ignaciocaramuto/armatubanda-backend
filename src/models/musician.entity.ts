@@ -1,4 +1,13 @@
-import { Entity, Property } from "@mikro-orm/core";
+import {
+  Cascade,
+  Collection,
+  Entity,
+  Enum,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+  Property,
+} from "@mikro-orm/core";
 import { Experience } from "../enums/experience.enum.js";
 import { Role } from "../enums/role.enum.js";
 import { Genre } from "./genre.entity.js";
@@ -6,16 +15,18 @@ import { Instrument } from "./instrument.entity.js";
 import { Image } from "./image.entity.js";
 import { Post } from "./post.entity.js";
 import { BaseEntity } from "../shared/db/base-entity.entity.js";
+import { Comment } from "./comment.entity.js";
+import { Career } from "./career.entity.js";
 
 @Entity()
 export class Musician extends BaseEntity {
-  @Property()
+  @Property({ nullable: false })
   email!: string;
 
-  @Property()
+  @Property({ nullable: false })
   password!: string;
 
-  @Property()
+  @Enum(() => Role)
   role!: Role;
 
   @Property()
@@ -24,66 +35,83 @@ export class Musician extends BaseEntity {
   @Property()
   isEmailConfirmed?: boolean;
 
-  @Property()
+  @Property({ nullable: false })
   firstName!: string;
 
-  @Property()
+  @Property({ nullable: false })
   lastname!: string;
 
-  @Property()
+  @Property({ nullable: false })
   stageName!: string;
 
-  @Property()
+  @Property({ nullable: false })
   birthday!: Date;
 
-  @Property()
+  @Property({ nullable: false })
   country!: string;
 
-  @Property()
+  @Property({ nullable: false })
   state!: string;
 
-  @Property()
+  @Property({ nullable: false })
   city!: string;
 
-  @Property()
+  @Property({ nullable: true })
   phoneNumber?: string;
 
-  @Property()
+  @Property({ nullable: true })
   webSite?: string;
 
-  @Property()
+  @Property({ nullable: true })
   socialMedia?: string;
 
-  @Property()
+  /*
+    How to map the ManyToMany relation, in this case we want to load all instruments from a Musician.
+    In a ManyToMany relation, there must be an owner.
+  */
+  @ManyToMany(() => Instrument, (instrument) => instrument.musicians, {
+    cascade: [Cascade.ALL],
+    owner: true,
+  })
   instruments!: Instrument[];
 
-  @Property()
+  @ManyToMany(() => Genre, (genre) => genre.musicians, {
+    cascade: [Cascade.ALL],
+    owner: true,
+  })
   genres!: Genre[];
 
-  @Property()
+  @Enum(() => Experience)
   experience!: Experience;
 
-  // @Property()
-  // career?: Career[];
+  @OneToMany(() => Career, (career) => career.musician, {
+    cascade: [Cascade.ALL],
+    nullable: true,
+  })
+  career? = new Collection<Comment>(this);
 
-  @Property()
+  @Property({ nullable: true })
   bio?: string;
 
-  @Property()
-  lookingBands?: boolean;
+  @Property({ nullable: false })
+  lookingBands!: boolean;
 
-  @Property()
-  lookingMusician?: boolean;
+  @Property({ nullable: false })
+  lookingMusician!: boolean;
 
-  @Property()
-  available?: boolean;
+  @Property({ nullable: false })
+  available!: boolean;
 
-  @Property()
+  @OneToOne(() => Image, (image) => image.musician, { owner: true })
   image!: Image;
 
-  @Property()
-  comments?: Comment[];
+  @OneToMany(() => Comment, (comment) => comment.musician, {
+    cascade: [Cascade.ALL],
+  })
+  comments = new Collection<Comment>(this);
 
-  @Property()
-  posts?: Post[];
+  @OneToMany(() => Post, (post) => post.musician, {
+    cascade: [Cascade.ALL],
+  })
+  posts = new Collection<Post>(this);
 }

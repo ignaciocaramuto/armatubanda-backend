@@ -3,13 +3,13 @@ import { Musician } from "../models/musician.entity.js";
 
 export class MusicianController {
   static async getAll(req: Request, res: Response) {
-    const musicians = await Musician.getAll(req.query);
+    const musicians = "";
     return res.json(musicians);
   }
 
   static async getById(req: Request, res: Response) {
     const { id } = req.params;
-    const musician = await Musician.getById(parseInt(id));
+    const musician = "";
 
     if (!musician) {
       return res.status(404).json({ message: "Músico no encontrado" });

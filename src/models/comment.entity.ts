@@ -1,4 +1,4 @@
-import { Entity, Property, ManyToOne, OneToOne } from "@mikro-orm/core";
+import { Entity, Property, ManyToOne, OneToOne, Rel } from "@mikro-orm/core";
 import { Musician } from "./musician.entity.js";
 import { BaseEntity } from "../shared/db/base-entity.entity.js";
 
@@ -8,9 +8,9 @@ export class Comment extends BaseEntity {
   comment!: string;
 
   @ManyToOne(() => Musician, { nullable: false })
-  musician!: Musician;
+  musician!: Rel<Musician>;
 
   // Consultar
   @OneToOne(() => Musician, { nullable: false })
-  commentator!: Musician;
+  commentator!: Rel<Musician>;
 }

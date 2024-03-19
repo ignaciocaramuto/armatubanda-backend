@@ -1,4 +1,4 @@
-import { Entity, Property, ManyToOne } from "@mikro-orm/core";
+import { Entity, Property, ManyToOne, Rel } from "@mikro-orm/core";
 import { Musician } from "./musician.entity.js";
 import { BaseEntity } from "../shared/db/base-entity.entity.js";
 
@@ -14,5 +14,5 @@ export class Career extends BaseEntity {
   endDate!: Date;
 
   @ManyToOne(() => Musician, { nullable: false })
-  musician!: Musician;
+  musician!: Rel<Musician>;
 }

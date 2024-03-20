@@ -96,12 +96,6 @@ export class Musician extends BaseEntity {
   @Property({ nullable: true })
   lookingBands?: boolean;
 
-  @Property({ nullable: true })
-  lookingMusician?: boolean;
-
-  @Property({ nullable: true })
-  available?: boolean;
-
   @OneToOne(() => Image, (image) => image.musician, {
     owner: true,
     nullable: true,

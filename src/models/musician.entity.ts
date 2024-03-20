@@ -73,13 +73,13 @@ export class Musician extends BaseEntity {
     cascade: [Cascade.ALL],
     owner: true,
   })
-  instruments!: Instrument[];
+  instruments = new Collection<Instrument>(this);
 
   @ManyToMany(() => Genre, (genre) => genre.musicians, {
     cascade: [Cascade.ALL],
     owner: true,
   })
-  genres!: Genre[];
+  genres = new Collection<Genre>(this);
 
   @Enum({ items: () => Experience, nullable: true })
   experience?: Experience;

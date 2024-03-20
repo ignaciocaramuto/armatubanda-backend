@@ -16,8 +16,7 @@ export const verifyToken = (
   }
 
   try {
-    const payload = verify(token, "secret");
-    req.body.email = payload.sub;
+    verify(token, "secret");
     next();
   } catch (error: any) {
     res.status(403).json({ message: "El Token no es válido." });

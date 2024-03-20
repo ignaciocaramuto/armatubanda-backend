@@ -5,6 +5,8 @@ import { RequestContext } from "@mikro-orm/core";
 import { musicianRouter } from "./routes/musicians.route.js";
 import { authRouter } from "./routes/auth.route.js";
 import { verifyToken } from "./middlewares/verify-token.middleware.js";
+import { instrumentRouter } from "./routes/instruments.route.js";
+import { genreRouter } from "./routes/genres.route.js";
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/musician", verifyToken, musicianRouter);
+app.use("/instrument", verifyToken, instrumentRouter); // TODO: Only admin
+app.use("/genre", verifyToken, genreRouter); // TODO: Only admin
 
 await syncSchema(); // Never in prod
 

@@ -15,14 +15,14 @@ export class MusicianController {
   }
 
   static async getById(req: Request, res: Response) {
-    const { id } = req.params;
-    const musician = "";
+    try {
+      const id = Number.parseInt(req.body.id);
+      const musician = await em.findOneOrFail(Musician, { id });
 
-    if (!musician) {
-      return res.status(404).json({ message: "Músico no encontrado" });
+      res.status(200).json(musician);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
     }
-
-    res.json(musician);
   }
 
   static async create(req: Request, res: Response) {

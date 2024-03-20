@@ -7,10 +7,11 @@ export class Comment extends BaseEntity {
   @Property()
   comment!: string;
 
-  @ManyToOne(() => Musician, { nullable: false })
+  @ManyToOne(() => Musician, { nullable: true })
   musician!: Rel<Musician>;
 
-  // Consultar
-  @OneToOne(() => Musician, { nullable: false })
-  commentator!: Rel<Musician>;
+  // Same for band
+
+  @ManyToOne(() => Musician, { nullable: false })
+  author!: Rel<Musician>;
 }

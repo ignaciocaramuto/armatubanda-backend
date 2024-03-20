@@ -113,6 +113,11 @@ export class Musician extends BaseEntity {
   })
   comments = new Collection<Comment>(this);
 
+  @OneToMany(() => Comment, (comment) => comment.author, {
+    cascade: [Cascade.ALL],
+  })
+  writtenComments = new Collection<Comment>(this);
+
   @OneToMany(() => Post, (post) => post.musician, {
     cascade: [Cascade.ALL],
   })

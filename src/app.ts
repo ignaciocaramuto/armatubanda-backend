@@ -7,6 +7,7 @@ import { authRouter } from "./routes/auth.route.js";
 import { verifyToken } from "./middlewares/verify-token.middleware.js";
 import { instrumentRouter } from "./routes/instruments.route.js";
 import { genreRouter } from "./routes/genres.route.js";
+import { errorHandler } from "./middlewares/error-handler.middleware.js";
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.use("/instrument", verifyToken, instrumentRouter); // TODO: Only admin
 app.use("/genre", verifyToken, genreRouter); // TODO: Only admin
 
 await syncSchema(); // Never in prod
+
+app.use(errorHandler);
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000/");

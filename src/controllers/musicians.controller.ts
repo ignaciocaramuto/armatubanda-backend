@@ -6,33 +6,21 @@ const em = orm.em;
 
 export class MusicianController {
   static async getAll(req: Request, res: Response) {
-    try {
-      const musicians = await em.find(Musician, {});
-      res.status(200).json(musicians);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
+    const musicians = await em.find(Musician, {});
+    res.status(200).json(musicians);
   }
 
   static async getById(req: Request, res: Response) {
-    try {
-      const id = Number.parseInt(req.params.id);
-      const musician = await em.findOneOrFail(Musician, { id });
+    const id = Number.parseInt(req.params.id);
+    const musician = await em.findOneOrFail(Musician, { id });
 
-      res.status(200).json(musician);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
+    res.status(200).json(musician);
   }
 
   static async create(req: Request, res: Response) {
-    try {
-      const musician = em.create(Musician, req.body);
-      await em.flush();
-      res.status(201).json(musician);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
+    const musician = em.create(Musician, req.body);
+    await em.flush();
+    res.status(201).json(musician);
   }
 
   /* 
@@ -41,15 +29,11 @@ export class MusicianController {
     Posible solution: restringe email & password fields.
   */
   static async createProfile(req: Request, res: Response) {
-    try {
-      const id = Number.parseInt(req.params.id);
-      const musician = await em.findOneOrFail(Musician, { id });
-      em.assign(musician, { ...req.body, isProfileSet: true });
-      await em.flush();
-      res.status(201).json(musician);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    }
+    const id = Number.parseInt(req.params.id);
+    const musician = await em.findOneOrFail(Musician, { id });
+    em.assign(musician, { ...req.body, isProfileSet: true });
+    await em.flush();
+    res.status(200).json(musician);
   }
 
   static async update(req: Request, res: Response) {}

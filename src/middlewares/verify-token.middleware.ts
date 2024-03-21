@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jsonwebtoken from "jsonwebtoken";
+import { AppError } from "../utils/app-error.js";
 
 const { verify } = jsonwebtoken;
 
@@ -12,13 +13,9 @@ export const verifyToken = (
   const token = header.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ message: "Token no proporcionado." });
+    throw new AppError("Token no proporcionado.", 401);
   }
 
-  try {
-    verify(token, "secret");
-    next();
-  } catch (error: any) {
-    res.status(403).json({ message: "El Token no es válido." });
-  }
+  verify(token, "secret");
+  next();
 };

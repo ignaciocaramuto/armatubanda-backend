@@ -13,7 +13,7 @@ export const errorHandler = (
       .json({ message: "El Token no es válido o ha expirado." });
   }
 
-  if (error.name === "NotFoundError") {
+  if (error.name === "NotFoundError" || error.name === "ValidationError") {
     return res.status(400).json({ message: error.message });
   }
 

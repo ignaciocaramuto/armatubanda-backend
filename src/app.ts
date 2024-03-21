@@ -8,6 +8,8 @@ import { verifyToken } from "./middlewares/verify-token.middleware.js";
 import { instrumentRouter } from "./routes/instruments.route.js";
 import { genreRouter } from "./routes/genres.route.js";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";
+import { validation } from "./middlewares/validation.middleware.js";
+import { registerLoginSchema } from "./validations/register-login.validation.js";
 
 const app = express();
 
@@ -17,7 +19,7 @@ app.use((req, res, next) => {
   RequestContext.create(orm.em, next); //em = Entity Manager: abstraccion que permite manejar todas las entidades que definimos y nos permite manejarlas uniformemente (unit of work)
 });
 
-app.use("/auth", authRouter);
+app.use("/auth", validation(registerLoginSchema), authRouter);
 app.use("/musician", verifyToken, musicianRouter);
 app.use("/instrument", verifyToken, instrumentRouter); // TODO: Only admin
 app.use("/genre", verifyToken, genreRouter); // TODO: Only admin

@@ -12,9 +12,8 @@ const em = orm.em;
 export class AuthController {
   static async register(req: Request, res: Response) {
     const { email, password } = req.body;
-    AuthController.requiredFieldsValidation(email, password);
-
     const duplicate = await em.findOne(Musician, { email });
+
     if (duplicate) {
       throw new AppError(`El email ${email} ya fue utilizado.`, 409);
     }
@@ -36,8 +35,6 @@ export class AuthController {
 
   static async login(req: Request, res: Response) {
     const { email, password } = req.body;
-    AuthController.requiredFieldsValidation(email, password);
-
     const musician = await em.findOneOrFail(Musician, { email });
     const hashedPassword = createHash("md5").update(password).digest("hex");
 
@@ -48,11 +45,5 @@ export class AuthController {
     const token = sign({ email }, "secret", { expiresIn: "2h" });
 
     res.status(200).json({ token });
-  }
-
-  static requiredFieldsValidation(email: string, password: string) {
-    if (!email || !password) {
-      throw new AppError("Email y contraseña son requeridos.", 400);
-    }
   }
 }

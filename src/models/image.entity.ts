@@ -1,4 +1,4 @@
-import { BlobType, Entity, Property, OneToOne, Rel } from "@mikro-orm/core";
+import { Entity, Property, OneToOne, Rel } from "@mikro-orm/core";
 import { BaseEntity } from "../shared/db/base-entity.entity.js";
 import { Musician } from "./musician.entity.js";
 
@@ -10,8 +10,8 @@ export class Image extends BaseEntity {
   @Property()
   type!: string;
 
-  @Property()
-  byte!: BlobType[];
+  @Property({ type: "longblob" })
+  data!: Buffer;
 
   @OneToOne(() => Musician, (musician) => musician.image)
   musician!: Rel<Musician>;

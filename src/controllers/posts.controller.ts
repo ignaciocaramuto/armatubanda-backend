@@ -22,4 +22,12 @@ export class PostController {
 
     res.status(201).json({ message: "Posteo realizado correctamente" });
   }
+
+  static async delete(req: Request, res: Response) {
+    const { id } = req.user;
+    const postId = Number.parseInt(req.params.id);
+    const post = await em.findOneOrFail(Post, { id: postId, musician: id });
+    await em.removeAndFlush(post);
+    res.status(200).json({ message: "Posteo eliminado correctamente" });
+  }
 }

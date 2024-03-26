@@ -8,3 +8,4 @@ export const postRouter = Router();
 
 postRouter.get("/:id", tryCatch(PostController.getAll));
 postRouter.post("/", validation(postSchema), tryCatch(PostController.create));
+postRouter.delete("/:id", tryCatch(PostController.delete));

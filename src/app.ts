@@ -10,6 +10,7 @@ import { genreRouter } from "./routes/genres.route.js";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";
 import { validation } from "./middlewares/validation.middleware.js";
 import { registerLoginSchema } from "./validations/register-login.validation.js";
+import { postRouter } from "./routes/posts.route.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use("/auth", validation(registerLoginSchema), authRouter);
 app.use("/musician", verifyToken, musicianRouter);
 app.use("/instrument", verifyToken, instrumentRouter); // TODO: Only admin
 app.use("/genre", verifyToken, genreRouter); // TODO: Only admin
+app.use("/post", verifyToken, postRouter);
 
 await syncSchema(); // Never in prod
 

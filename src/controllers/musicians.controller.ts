@@ -28,14 +28,14 @@ export class MusicianController {
   /* 
     TODO: Ask if this is ok, to create a profile by a PUT method because Musician is already created when registered.
     With this method, user can update email and password and will be stored in db without hashing.
-    Posible solution: restringe email & password fields.
+    Posible solution: Custom Validation.
   */
   static async createUpdateProfile(req: Request, res: Response) {
     const emFork = em.fork();
     const id = Number.parseInt(req.params.id);
     const musician = await emFork.findOneOrFail(Musician, { id });
-
     let updatedMusician = { ...req.body, isProfileSet: true };
+
     if (req.file) {
       const image = {
         name: req.file.filename,
@@ -50,5 +50,6 @@ export class MusicianController {
     res.status(200).json(musician);
   }
 
-  static async uploadPost(req: Request, res: Response) {}
+  // TODO: Ask if this should be in a CommentController
+  static async uploadComment(req: Request, res: Response) {}
 }

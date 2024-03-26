@@ -11,7 +11,7 @@ import { errorHandler } from "./middlewares/error-handler.middleware.js";
 import { validation } from "./middlewares/validation.middleware.js";
 import { registerLoginSchema } from "./validations/register-login.validation.js";
 import { postRouter } from "./routes/posts.route.js";
-import { commentRouter } from "./routes/comment.route.js";
+import { commentRouter } from "./routes/comments.route.js";
 
 const app = express();
 

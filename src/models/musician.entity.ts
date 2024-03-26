@@ -17,6 +17,7 @@ import { Post } from "./post.entity.js";
 import { BaseEntity } from "../shared/db/base-entity.entity.js";
 import { Comment } from "./comment.entity.js";
 import { Career } from "./career.entity.js";
+import { Band } from "./band.entity.js";
 
 @Entity()
 export class Musician extends BaseEntity {
@@ -89,6 +90,9 @@ export class Musician extends BaseEntity {
     nullable: true,
   })
   career = new Collection<Comment>(this);
+
+  @ManyToMany(() => Band, (band) => band.members)
+  bands = new Collection<Band>(this);
 
   @Property({ nullable: true })
   bio?: string;

@@ -7,6 +7,7 @@ import {
 } from "@mikro-orm/core";
 import { BaseEntity } from "../shared/db/base-entity.entity.js";
 import { Musician } from "./musician.entity.js";
+import { Band } from "./band.entity.js";
 
 @Entity()
 export class Post extends BaseEntity {
@@ -16,6 +17,9 @@ export class Post extends BaseEntity {
   @Property({ type: DateTimeType })
   createdAt? = new Date();
 
-  @ManyToOne(() => Musician, { nullable: false })
-  musician!: Rel<Musician>;
+  @ManyToOne(() => Musician, { nullable: true })
+  musician?: Rel<Musician>;
+
+  @ManyToOne(() => Band, { nullable: true })
+  band?: Rel<Musician>;
 }

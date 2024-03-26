@@ -32,7 +32,7 @@ export class MusicianController {
   */
   static async createUpdateProfile(req: Request, res: Response) {
     const emFork = em.fork();
-    const id = Number.parseInt(req.params.id);
+    const { id } = req.user;
     const musician = await emFork.findOneOrFail(Musician, { id });
     let updatedMusician = { ...req.body, isProfileSet: true };
 

@@ -9,7 +9,7 @@ musicianRouter.get("/", tryCatch(MusicianController.getAll));
 musicianRouter.get("/:id", tryCatch(MusicianController.getById));
 musicianRouter.post("/", tryCatch(MusicianController.create));
 musicianRouter.patch(
-  "/:id",
+  "/",
   uploadFile.single("image"),
   tryCatch(MusicianController.createUpdateProfile)
 );

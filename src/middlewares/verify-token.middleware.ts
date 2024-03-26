@@ -16,6 +16,7 @@ export const verifyToken = (
     throw new AppError("Token no proporcionado.", 401);
   }
 
-  verify(token, "secret");
+  const decoded = verify(token, "secret");
+  req.user = decoded;
   next();
 };

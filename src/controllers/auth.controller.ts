@@ -42,7 +42,9 @@ export class AuthController {
       throw new AppError("Email y/o contraseña incorrectos", 401);
     }
 
-    const token = sign({ email }, "secret", { expiresIn: "2h" });
+    const token = sign({ id: musician.id, email }, "secret", {
+      expiresIn: "2h",
+    });
 
     res.status(200).json({ token });
   }

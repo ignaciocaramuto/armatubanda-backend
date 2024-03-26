@@ -94,6 +94,11 @@ export class Musician extends BaseEntity {
   @ManyToMany(() => Band, (band) => band.members)
   bands = new Collection<Band>(this);
 
+  @OneToMany(() => Band, (band) => band.leader, {
+    cascade: [Cascade.ALL],
+  })
+  ledBands = new Collection<Band>(this);
+
   @Property({ nullable: true })
   bio?: string;
 

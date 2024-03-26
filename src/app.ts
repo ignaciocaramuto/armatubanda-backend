@@ -12,6 +12,7 @@ import { validation } from "./middlewares/validation.middleware.js";
 import { registerLoginSchema } from "./validations/register-login.validation.js";
 import { postRouter } from "./routes/posts.route.js";
 import { commentRouter } from "./routes/comments.route.js";
+import { bandRouter } from "./routes/bands.route.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 
 app.use("/auth", validation(registerLoginSchema), authRouter);
 app.use("/musician", verifyToken, musicianRouter);
+app.use("/band", verifyToken, bandRouter);
 app.use("/instrument", verifyToken, instrumentRouter); // TODO: Only admin
 app.use("/genre", verifyToken, genreRouter); // TODO: Only admin
 app.use("/post", verifyToken, postRouter);

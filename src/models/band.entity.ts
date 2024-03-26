@@ -3,9 +3,11 @@ import {
   Collection,
   Entity,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   OneToOne,
   Property,
+  Rel,
 } from "@mikro-orm/core";
 import { Genre } from "./genre.entity.js";
 import { Image } from "./image.entity.js";
@@ -16,20 +18,20 @@ import { Musician } from "./musician.entity.js";
 
 @Entity()
 export class Band extends BaseEntity {
-  @Property({ nullable: true })
-  name?: string;
+  @Property()
+  name!: string;
 
-  @Property({ nullable: true })
-  description?: string;
+  @Property()
+  description!: string;
 
-  @Property({ nullable: true })
-  country?: string;
+  @Property()
+  country!: string;
 
-  @Property({ nullable: true })
-  state?: string;
+  @Property()
+  state!: string;
 
-  @Property({ nullable: true })
-  city?: string;
+  @Property()
+  city!: string;
 
   @Property({ nullable: true })
   phoneNumber?: string;
@@ -51,6 +53,9 @@ export class Band extends BaseEntity {
     owner: true,
   })
   members = new Collection<Musician>(this);
+
+  @ManyToOne(() => Musician)
+  leader!: Rel<Musician>;
 
   @Property({ nullable: true })
   lookingMusicians?: boolean;

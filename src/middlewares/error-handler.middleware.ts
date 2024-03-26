@@ -7,7 +7,10 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  if (error.name === "JsonWebTokenError") {
+  if (
+    error.name === "JsonWebTokenError" ||
+    error.name === "TokenExpiredError"
+  ) {
     return res
       .status(403)
       .json({ message: "El Token no es válido o ha expirado." });

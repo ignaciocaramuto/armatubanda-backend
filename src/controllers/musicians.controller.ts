@@ -29,6 +29,8 @@ export class MusicianController {
     TODO: Ask if this is ok, to create a profile by a PUT method because Musician is already created when registered.
     With this method, user can update email and password and will be stored in db without hashing.
     Posible solution: Custom Validation.
+
+    Other problem: Sending genres & instruments to request always inserts and duplicates the previous ones.
   */
   static async createUpdateProfile(req: Request, res: Response) {
     const emFork = em.fork();
@@ -36,6 +38,7 @@ export class MusicianController {
     const musician = await emFork.findOneOrFail(Musician, { id });
     let updatedMusician = { ...req.body, isProfileSet: true };
 
+    // TODO: This creates a new image and persists the previous one in table
     if (req.file) {
       const image = {
         name: req.file.filename,
@@ -49,7 +52,4 @@ export class MusicianController {
     await emFork.flush();
     res.status(200).json(musician);
   }
-
-  // TODO: Ask if this should be in a CommentController
-  static async uploadComment(req: Request, res: Response) {}
 }

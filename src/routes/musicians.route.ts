@@ -7,7 +7,6 @@ export const musicianRouter = Router();
 
 musicianRouter.get("/", tryCatch(MusicianController.getAll));
 musicianRouter.get("/:id", tryCatch(MusicianController.getById));
-musicianRouter.post("/", tryCatch(MusicianController.create));
 musicianRouter.patch(
   "/",
   uploadFile.single("image"),

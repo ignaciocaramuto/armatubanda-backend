@@ -25,7 +25,6 @@ export const errorHandler = (
   }
 
   return res.status(500).json({
-    message:
-      "Hubo un error en el servidor. Por favor inténtelo de nuevo más tarde.",
+    message: error.message,
   });
 };

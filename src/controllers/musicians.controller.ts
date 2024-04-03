@@ -19,19 +19,6 @@ export class MusicianController {
     res.status(200).json(musician);
   }
 
-  static async create(req: Request, res: Response) {
-    const musician = em.create(Musician, req.body);
-    await em.flush();
-    res.status(201).json(musician);
-  }
-
-  /* 
-    TODO: Ask if this is ok, to create a profile by a PUT method because Musician is already created when registered.
-    With this method, user can update email and password and will be stored in db without hashing.
-    Posible solution: Custom Validation.
-
-    Other problem: Sending genres & instruments to request always inserts and duplicates the previous ones.
-  */
   static async createUpdateProfile(req: Request, res: Response) {
     const emFork = em.fork();
     const { id } = req.user;

@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
 import { orm } from "../shared/db/orm.js";
 import { Musician } from "../models/musician.entity.js";
-import path from "path";
-import fs from "fs";
-import { __dirname } from "../temp/images/dirname.js";
 
 const em = orm.em;
 export class MusicianController {
@@ -22,20 +19,13 @@ export class MusicianController {
   static async createUpdateProfile(req: Request, res: Response) {
     const emFork = em.fork();
     const { id } = req.user;
-    const musician = await emFork.findOneOrFail(Musician, { id });
-    let updatedMusician = { ...req.body, isProfileSet: true };
+    const musician = emFork.getReference(Musician, id);
 
-    // TODO: This creates a new image and persists the previous one in table
-    if (req.file) {
-      const image = {
-        name: req.file.filename,
-        type: req.file.mimetype,
-        data: fs.readFileSync(path.join(__dirname, req.file.filename)),
-      };
-      updatedMusician = { ...updatedMusician, image };
-    }
-
-    emFork.assign(musician, updatedMusician);
+    emFork.assign(musician, {
+      ...req.body,
+      isProfileSet: true,
+      imagePath: req.file?.path,
+    });
     await emFork.flush();
     res.status(200).json(musician);
   }

@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
 import { orm } from "../shared/db/orm.js";
 import { Band } from "../models/band.entity.js";
-import path from "path";
-import fs from "fs";
-import { __dirname } from "../temp/images/dirname.js";
 
 const em = orm.em;
 
@@ -24,18 +21,23 @@ export class BandController {
     const emFork = em.fork();
     const { id } = req.user;
 
-    let createBand = { ...req.body, leader: id };
+    const band = emFork.create(Band, {
+      ...req.body,
+      leader: id,
+      imagePath: req.file?.path,
+    });
+    await emFork.flush();
+    res.status(201).json(band);
+  }
 
-    if (req.file) {
-      const image = {
-        name: req.file.filename,
-        type: req.file.mimetype,
-        data: fs.readFileSync(path.join(__dirname, req.file.filename)),
-      };
-      createBand = { ...createBand, image };
-    }
+  static async edit(req: Request, res: Response) {
+    const emFork = em.fork();
+    const { id } = req.user;
+    const bandId = Number.parseInt(req.params.id);
 
-    const band = emFork.create(Band, createBand);
+    const band = await emFork.findOneOrFail(Band, { id: bandId, leader: id });
+
+    await emFork.assign(band, { ...req.body, imagePath: req.file?.path });
     await emFork.flush();
     res.status(201).json(band);
   }

@@ -1,6 +1,5 @@
 import { Request } from "express";
 import multer from "multer";
-import { __dirname } from "../temp/images/dirname.js";
 
 const imageFilter = (req: Request, file: any, cb: any) => {
   if (file.mimetype.startsWith("image")) {
@@ -12,10 +11,10 @@ const imageFilter = (req: Request, file: any, cb: any) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, __dirname);
+    cb(null, "./images/");
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-bezkoder-${file.originalname}`);
+    cb(null, `${req.user.id}-${file.originalname}`);
   },
 });
 

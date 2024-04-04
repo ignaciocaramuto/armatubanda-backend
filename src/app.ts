@@ -29,6 +29,7 @@ app.use("/instrument", verifyToken, instrumentRouter); // TODO: Only admin
 app.use("/genre", verifyToken, genreRouter); // TODO: Only admin
 app.use("/post", verifyToken, postRouter);
 app.use("/comment", verifyToken, commentRouter);
+app.use("/images", express.static("images"));
 
 await syncSchema(); // Never in prod
 

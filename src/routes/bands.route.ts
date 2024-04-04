@@ -12,3 +12,8 @@ bandRouter.post(
   uploadFile.single("image"),
   tryCatch(BandController.create)
 );
+bandRouter.put(
+  "/:id",
+  uploadFile.single("image"),
+  tryCatch(BandController.edit)
+);

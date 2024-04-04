@@ -5,14 +5,12 @@ import {
   Enum,
   ManyToMany,
   OneToMany,
-  OneToOne,
   Property,
 } from "@mikro-orm/core";
 import { Experience } from "../enums/experience.enum.js";
 import { Role } from "../enums/role.enum.js";
 import { Genre } from "./genre.entity.js";
 import { Instrument } from "./instrument.entity.js";
-import { Image } from "./image.entity.js";
 import { Post } from "./post.entity.js";
 import { BaseEntity } from "../shared/db/base-entity.entity.js";
 import { Comment } from "./comment.entity.js";
@@ -105,11 +103,8 @@ export class Musician extends BaseEntity {
   @Property({ nullable: true })
   lookingBands?: boolean;
 
-  @OneToOne(() => Image, (image) => image.musician, {
-    owner: true,
-    nullable: true,
-  })
-  image?: Image;
+  @Property({ nullable: true })
+  imagePath!: string;
 
   @OneToMany(() => Comment, (comment) => comment.musician, {
     cascade: [Cascade.ALL],

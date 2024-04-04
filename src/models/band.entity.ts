@@ -13,6 +13,7 @@ import { Post } from "./post.entity.js";
 import { BaseEntity } from "../shared/db/base-entity.entity.js";
 import { Comment } from "./comment.entity.js";
 import { Musician } from "./musician.entity.js";
+import { Advertisement } from "./advertisement.entity.js";
 
 @Entity()
 export class Band extends BaseEntity {
@@ -70,4 +71,9 @@ export class Band extends BaseEntity {
     cascade: [Cascade.ALL],
   })
   posts = new Collection<Post>(this);
+
+  @OneToMany(() => Advertisement, (advertisement) => advertisement.band, {
+    cascade: [Cascade.ALL],
+  })
+  advertisements = new Collection<Advertisement>(this);
 }

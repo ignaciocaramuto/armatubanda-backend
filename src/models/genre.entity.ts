@@ -2,6 +2,7 @@ import { Collection, Entity, ManyToMany, Property } from "@mikro-orm/core";
 import { BaseEntity } from "../shared/db/base-entity.entity.js";
 import { Musician } from "./musician.entity.js";
 import { Band } from "./band.entity.js";
+import { Advertisement } from "./advertisement.entity.js";
 
 @Entity()
 export class Genre extends BaseEntity {
@@ -13,4 +14,7 @@ export class Genre extends BaseEntity {
 
   @ManyToMany(() => Band, (band) => band.genres)
   bands = new Collection<Band>(this);
+
+  @ManyToMany(() => Advertisement, (advertisement) => advertisement.genres)
+  advertisements = new Collection<Advertisement>(this);
 }

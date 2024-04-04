@@ -21,5 +21,5 @@ export class Post extends BaseEntity {
   musician?: Rel<Musician>;
 
   @ManyToOne(() => Band, { nullable: true })
-  band?: Rel<Musician>;
+  band?: Rel<Band>;
 }

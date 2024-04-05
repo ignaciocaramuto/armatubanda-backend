@@ -23,7 +23,7 @@ export class Musician extends BaseEntity {
   @Property()
   email!: string;
 
-  @Property()
+  @Property({ hidden: true })
   password!: string;
 
   @Enum(() => Role)

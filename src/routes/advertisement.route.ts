@@ -13,3 +13,7 @@ advertisementRouter.delete(
   "/:bandId/:id",
   tryCatch(AdvertisementController.delete)
 );
+advertisementRouter.get(
+  "/:bandId/:id",
+  tryCatch(AdvertisementController.getApplications)
+);

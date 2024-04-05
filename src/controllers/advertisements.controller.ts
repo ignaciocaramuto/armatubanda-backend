@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { orm } from "../shared/db/orm.js";
 import { Band } from "../models/band.entity.js";
 import { Advertisement } from "../models/advertisement.entity.js";
+import { Status } from "../enums/status.enum.js";
 
 const em = orm.em;
 
@@ -9,7 +10,11 @@ export class AdvertisementController {
   static async getAllFromBand(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
 
-    const advertisements = await em.find(Advertisement, { band: id });
+    const advertisements = await em.find(
+      Advertisement,
+      { band: id },
+      { populate: ["band"] }
+    );
     res.status(200).json(advertisements);
   }
 
@@ -38,5 +43,22 @@ export class AdvertisementController {
     const advertisement = await em.findOneOrFail(Advertisement, { id: adId });
     await em.removeAndFlush(advertisement);
     res.status(200).json({ message: "Aviso eliminado correctamente" });
+  }
+
+  static async getApplications(req: Request, res: Response) {
+    const { id } = req.user;
+    const bandId = Number.parseInt(req.params.bandId);
+    const adId = Number.parseInt(req.params.id);
+
+    await em.findOneOrFail(Band, { id: bandId, leader: id });
+
+    const { applications } = await em.findOneOrFail(
+      Advertisement,
+      { id: adId, band: bandId },
+      { populate: ["applications"] }
+    );
+    res
+      .status(200)
+      .json(applications.filter(({ status }) => status === Status.PENDING));
   }
 }

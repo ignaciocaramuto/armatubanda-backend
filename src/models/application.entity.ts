@@ -9,6 +9,7 @@ import {
 import { BaseEntity } from "../shared/db/base-entity.entity.js";
 import { Status } from "../enums/status.enum.js";
 import { Advertisement } from "./advertisement.entity.js";
+import { Musician } from "./musician.entity.js";
 
 @Entity()
 export class Application extends BaseEntity {
@@ -23,4 +24,7 @@ export class Application extends BaseEntity {
 
   @ManyToOne(() => Advertisement)
   advertisement!: Rel<Advertisement>;
+
+  @ManyToOne(() => Musician)
+  applicant!: Rel<Musician>;
 }

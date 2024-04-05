@@ -14,6 +14,7 @@ import { postRouter } from "./routes/posts.route.js";
 import { commentRouter } from "./routes/comments.route.js";
 import { bandRouter } from "./routes/bands.route.js";
 import { advertisementRouter } from "./routes/advertisement.route.js";
+import { applicationRouter } from "./routes/applications.route.js";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use("/post", verifyToken, postRouter);
 app.use("/comment", verifyToken, commentRouter);
 app.use("/images", express.static("images"));
 app.use("/advertisement", verifyToken, advertisementRouter);
+app.use("/application", verifyToken, applicationRouter);
 
 await syncSchema(); // Never in prod
 

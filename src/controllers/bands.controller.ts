@@ -6,7 +6,18 @@ const em = orm.em;
 
 export class BandController {
   static async getAll(req: Request, res: Response) {
-    const bands = await em.find(Band, {});
+    const { name, country, state, city, genres, lookingMusicians } = req.query;
+
+    const filters: Record<string, any> = {};
+
+    if (name) filters.name = { $like: `%${name}%` };
+    if (country) filters.country = country;
+    if (state) filters.state = state;
+    if (city) filters.city = city;
+    if (genres) filters.genres = genres;
+    if (lookingMusicians) filters.lookingMusicians = Boolean(lookingMusicians);
+
+    const bands = await em.find(Band, filters);
     res.status(200).json(bands);
   }
 

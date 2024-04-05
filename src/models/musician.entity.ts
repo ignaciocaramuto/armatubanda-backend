@@ -85,7 +85,7 @@ export class Musician extends BaseEntity {
     cascade: [Cascade.ALL],
     nullable: true,
   })
-  career = new Collection<Comment>(this);
+  career = new Collection<Career>(this);
 
   @ManyToMany(() => Band, (band) => band.members)
   bands = new Collection<Band>(this);

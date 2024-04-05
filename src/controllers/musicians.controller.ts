@@ -23,12 +23,14 @@ export class MusicianController {
     if (country) filters.country = country;
     if (state) filters.state = state;
     if (city) filters.city = city;
-    if (instruments) filters.instruments = instruments;
-    if (genres) filters.genres = genres;
+    if (instruments) filters.instruments = { $in: instruments };
+    if (genres) filters.genres = { $in: genres };
     if (experience) filters.experience = <Experience>experience;
     if (lookingBands) filters.lookingBands = Boolean(lookingBands);
 
-    const musicians = await em.find(Musician, filters);
+    const musicians = await em.find(Musician, filters, {
+      populate: ["instruments", "genres"],
+    });
     res.status(200).json(musicians);
   }
 

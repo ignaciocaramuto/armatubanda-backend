@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   RequestContext.create(orm.em, next); //em = Entity Manager: abstraccion que permite manejar todas las entidades que definimos y nos permite manejarlas uniformemente (unit of work)
 });
 
-app.use("/auth", validation(registerLoginSchema), authRouter);
+app.use("/auth", authRouter);
 app.use("/musician", verifyToken, musicianRouter);
 app.use("/band", verifyToken, bandRouter);
 app.use("/instrument", verifyToken, instrumentRouter); // TODO: Only admin

@@ -45,6 +45,29 @@ export class AuthController {
       expiresIn: "2h",
     });
 
-    res.status(200).json({ token });
+    res.status(200).json({
+      id: musician.id,
+      token,
+      email,
+      isProfileSet: musician.isProfileSet,
+      firstName: musician.firstName,
+      lastName: musician.lastName,
+      imagePath: musician.imagePath,
+    });
+  }
+
+  static async getCurrentMusician(req: Request, res: Response) {
+    const { id } = req.user;
+
+    const { email, isProfileSet, firstName, lastName, imagePath } =
+      await em.findOneOrFail(Musician, id);
+    res.status(200).json({
+      id,
+      email,
+      isProfileSet,
+      firstName,
+      lastName,
+      imagePath,
+    });
   }
 }

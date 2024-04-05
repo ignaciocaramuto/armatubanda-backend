@@ -15,11 +15,12 @@ import { commentRouter } from "./routes/comments.route.js";
 import { bandRouter } from "./routes/bands.route.js";
 import { advertisementRouter } from "./routes/advertisement.route.js";
 import { applicationRouter } from "./routes/applications.route.js";
+import { corsMiddleware } from "./middlewares/cors.middleware.js";
 
 const app = express();
 
 app.use(json());
-
+app.use(corsMiddleware());
 app.use((req, res, next) => {
   RequestContext.create(orm.em, next); //em = Entity Manager: abstraccion que permite manejar todas las entidades que definimos y nos permite manejarlas uniformemente (unit of work)
 });

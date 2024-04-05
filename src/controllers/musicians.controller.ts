@@ -1,11 +1,34 @@
 import { Request, Response } from "express";
 import { orm } from "../shared/db/orm.js";
 import { Musician } from "../models/musician.entity.js";
+import { Experience } from "../enums/experience.enum.js";
 
 const em = orm.em;
 export class MusicianController {
   static async getAll(req: Request, res: Response) {
-    const musicians = await em.find(Musician, {});
+    const {
+      firstName,
+      country,
+      state,
+      city,
+      instruments,
+      genres,
+      experience,
+      lookingBands,
+    } = req.query;
+
+    const filters: Record<string, any> = {};
+
+    if (firstName) filters.firstName = { $like: `%${firstName}%` };
+    if (country) filters.country = country;
+    if (state) filters.state = state;
+    if (city) filters.city = city;
+    if (instruments) filters.instruments = instruments;
+    if (genres) filters.genres = genres;
+    if (experience) filters.experience = <Experience>experience;
+    if (lookingBands) filters.lookingBands = Boolean(lookingBands);
+
+    const musicians = await em.find(Musician, filters);
     res.status(200).json(musicians);
   }
 

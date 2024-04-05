@@ -32,9 +32,6 @@ export class Musician extends BaseEntity {
   @Property()
   isProfileSet!: boolean;
 
-  @Property()
-  isEmailConfirmed!: boolean;
-
   @Property({ nullable: true })
   firstName?: string;
 

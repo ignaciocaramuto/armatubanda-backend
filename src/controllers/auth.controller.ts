@@ -25,7 +25,6 @@ export class AuthController {
       password: hashedPassword,
       role: Role.USER,
       isProfileSet: false,
-      isEmailConfirmed: false,
     };
 
     const registeredMusician = em.create(Musician, musician);

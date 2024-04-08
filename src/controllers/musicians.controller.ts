@@ -36,7 +36,11 @@ export class MusicianController {
 
   static async getById(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
-    const musician = await em.findOneOrFail(Musician, { id });
+    const musician = await em.findOneOrFail(
+      Musician,
+      { id },
+      { populate: ["genres"] }
+    );
 
     res.status(200).json(musician);
   }

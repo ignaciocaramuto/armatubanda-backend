@@ -6,7 +6,8 @@ import { postSchema } from "../validations/post.validation.js";
 
 export const postRouter = Router();
 
-postRouter.get("/:id", tryCatch(PostController.getAll));
+postRouter.get("/musician/:id", tryCatch(PostController.getAllFromMusician));
+postRouter.get("/band/:id", tryCatch(PostController.getAllFromBand));
 postRouter.post(
   "/musician",
   validation(postSchema),

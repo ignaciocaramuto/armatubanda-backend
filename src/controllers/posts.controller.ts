@@ -7,9 +7,15 @@ import { Band } from "../models/band.entity.js";
 const em = orm.em;
 
 export class PostController {
-  static async getAll(req: Request, res: Response) {
+  static async getAllFromMusician(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
     const posts = await em.find(Post, { musician: id });
+    res.status(200).json(posts);
+  }
+
+  static async getAllFromBand(req: Request, res: Response) {
+    const id = Number.parseInt(req.params.id);
+    const posts = await em.find(Post, { band: id });
     res.status(200).json(posts);
   }
 

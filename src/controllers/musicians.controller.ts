@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { orm } from "../shared/db/orm.js";
 import { Musician } from "../models/musician.entity.js";
 import { Experience } from "../enums/experience.enum.js";
+import { Career } from "../models/career.entity.js";
 
 const em = orm.em;
 export class MusicianController {
@@ -39,7 +40,7 @@ export class MusicianController {
     const musician = await em.findOneOrFail(
       Musician,
       { id },
-      { populate: ["genres"] }
+      { populate: ["genres", "instruments", "career"] }
     );
 
     res.status(200).json(musician);
@@ -48,13 +49,47 @@ export class MusicianController {
   static async createUpdateProfile(req: Request, res: Response) {
     const emFork = em.fork();
     const { id } = req.user;
-    const musician = emFork.getReference(Musician, id);
+    const { career } = req.body;
+    const musician = await emFork.findOneOrFail(Musician, id);
 
-    emFork.assign(musician, {
+    let updatedMusician = {
       ...req.body,
       isProfileSet: true,
-      imagePath: req.file?.path,
-    });
+    };
+
+    if (req.file?.path) {
+      updatedMusician = { ...updatedMusician, imagePath: req.file.path };
+    }
+
+    if (career) {
+      if (!musician.career.isInitialized()) {
+        await musician.career.init();
+      }
+
+      const careers = JSON.parse(career);
+      const careersMap = careers.map(
+        ({ title, description, startDate, endDate }: any) => {
+          const careerObj = new Career();
+          Object.assign(careerObj, {
+            title,
+            description,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            musician,
+          });
+          return careerObj;
+        }
+      );
+
+      careersMap.forEach((career: Career) => {
+        musician.career.add(career);
+      });
+
+      updatedMusician = { ...updatedMusician, career: musician.career };
+    }
+
+    emFork.assign(musician, updatedMusician);
+
     await emFork.flush();
     res.status(200).json(musician);
   }

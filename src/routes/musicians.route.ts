@@ -12,3 +12,4 @@ musicianRouter.patch(
   uploadFile.single("image"),
   tryCatch(MusicianController.createUpdateProfile)
 );
+musicianRouter.get("/more-info/:id", tryCatch(MusicianController.getMoreInfo));

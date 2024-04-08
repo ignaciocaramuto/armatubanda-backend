@@ -5,6 +5,9 @@ import { BaseEntity } from "../shared/db/base-entity.entity.js";
 @Entity()
 export class Career extends BaseEntity {
   @Property()
+  title!: string;
+
+  @Property()
   description!: string;
 
   @Property()

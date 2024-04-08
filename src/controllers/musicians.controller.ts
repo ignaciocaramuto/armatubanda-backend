@@ -58,4 +58,15 @@ export class MusicianController {
     await emFork.flush();
     res.status(200).json(musician);
   }
+
+  static async getMoreInfo(req: Request, res: Response) {
+    const { id } = req.params;
+    const { bio, career, instruments, lookingBands } = await em.findOneOrFail(
+      Musician,
+      Number.parseInt(id),
+      { populate: ["career", "instruments"] }
+    );
+
+    res.status(200).json({ bio, career, instruments, lookingBands });
+  }
 }

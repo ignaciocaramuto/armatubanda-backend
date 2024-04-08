@@ -4,8 +4,8 @@ import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 export const orm = await MikroORM.init({
   entities: ["dist/**/*.entity.js"],
   entitiesTs: ["src/**/*.entity.ts"],
-  dbName: "armatubanda2",
-  clientUrl: "mysql://root:admin@localhost:3306/armatubanda2",
+  dbName: "armatubanda",
+  clientUrl: "mysql://root:admin@localhost:3306/armatubanda",
   highlighter: new SqlHighlighter(),
   debug: true,
   schemaGenerator: {

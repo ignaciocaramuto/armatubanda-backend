@@ -6,8 +6,7 @@ const em = orm.em;
 
 export class InstrumentController {
   static async getAll(req: Request, res: Response) {
-    const { name } = req.params;
-    const instruments = await em.find(Instrument, { name });
+    const instruments = await em.findAll(Instrument);
     res.status(200).json(instruments);
   }
 

@@ -4,5 +4,10 @@ import { CommentController } from "../controllers/comment.controller.js";
 
 export const commentRouter = Router();
 
-commentRouter.get("/:id", tryCatch(CommentController.getAll));
-commentRouter.post("/:id", tryCatch(CommentController.create));
+commentRouter.get(
+  "/musician/:id",
+  tryCatch(CommentController.getAllFromMusician)
+);
+commentRouter.get("/band/:id", tryCatch(CommentController.getAllFromBand));
+commentRouter.post("/musician", tryCatch(CommentController.createForMusician));
+commentRouter.post("/band/:id", tryCatch(CommentController.createForBand));

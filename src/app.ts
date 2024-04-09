@@ -16,6 +16,7 @@ import { bandRouter } from "./routes/bands.route.js";
 import { advertisementRouter } from "./routes/advertisement.route.js";
 import { applicationRouter } from "./routes/applications.route.js";
 import { corsMiddleware } from "./middlewares/cors.middleware.js";
+import { invitationRouter } from "./routes/invitations.route.js";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/comment", verifyToken, commentRouter);
 app.use("/images", express.static("images"));
 app.use("/advertisement", verifyToken, advertisementRouter);
 app.use("/application", verifyToken, applicationRouter);
+app.use("/invitation", verifyToken, invitationRouter);
 
 await syncSchema(); // Never in prod
 

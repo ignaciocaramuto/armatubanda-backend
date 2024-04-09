@@ -25,7 +25,12 @@ export class CommentController {
     em.create(Comment, { comment, author: id, musician: musicianId });
     await em.flush();
 
-    res.status(201).json({ message: "Comentario realizado correctamente" });
+    const comments = await em.find(
+      Comment,
+      { musician: musicianId },
+      { populate: ["author"] }
+    );
+    res.status(201).json(comments);
   }
 
   static async createForBand(req: Request, res: Response) {
@@ -36,6 +41,11 @@ export class CommentController {
     em.create(Comment, { comment, author: id, band: bandId });
     await em.flush();
 
-    res.status(201).json({ message: "Comentario realizado correctamente" });
+    const comments = await em.find(
+      Comment,
+      { band: bandId },
+      { populate: ["author"] }
+    );
+    res.status(201).json(comments);
   }
 }

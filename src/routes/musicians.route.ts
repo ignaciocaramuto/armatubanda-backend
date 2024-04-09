@@ -7,9 +7,14 @@ export const musicianRouter = Router();
 
 musicianRouter.get("/", tryCatch(MusicianController.getAll));
 musicianRouter.get("/:id", tryCatch(MusicianController.getById));
-musicianRouter.patch(
+musicianRouter.put(
   "/",
   uploadFile.single("image"),
   tryCatch(MusicianController.createUpdateProfile)
 );
 musicianRouter.get("/more-info/:id", tryCatch(MusicianController.getMoreInfo));
+musicianRouter.get(
+  "/:id/bands",
+  tryCatch(MusicianController.getBandsFromMusician)
+);
+musicianRouter.get("/leader", tryCatch(MusicianController.getBandsFromLeader));

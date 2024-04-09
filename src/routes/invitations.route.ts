@@ -9,4 +9,4 @@ invitationRouter.post(
   "/:bandId/:musicianId",
   tryCatch(InvitationController.create)
 );
-invitationRouter.delete("/", tryCatch(InvitationController.update));
+invitationRouter.delete("/:id", tryCatch(InvitationController.update));

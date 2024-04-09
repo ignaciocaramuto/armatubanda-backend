@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { orm } from "../shared/db/orm.js";
 import { Band } from "../models/band.entity.js";
+import { Genre } from "../models/genre.entity.js";
 
 const em = orm.em;
 
@@ -23,7 +24,11 @@ export class BandController {
 
   static async getById(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
-    const band = await em.findOneOrFail(Band, { id });
+    const band = await em.findOneOrFail(
+      Band,
+      { id },
+      { populate: ["genres", "leader"] }
+    );
 
     res.status(200).json(band);
   }
@@ -37,6 +42,9 @@ export class BandController {
       leader: id,
       imagePath: req.file?.path,
     });
+
+    // genres doens't work
+
     await emFork.flush();
     res.status(201).json(band);
   }

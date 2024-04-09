@@ -9,5 +9,8 @@ commentRouter.get(
   tryCatch(CommentController.getAllFromMusician)
 );
 commentRouter.get("/band/:id", tryCatch(CommentController.getAllFromBand));
-commentRouter.post("/musician", tryCatch(CommentController.createForMusician));
+commentRouter.post(
+  "/musician/:id",
+  tryCatch(CommentController.createForMusician)
+);
 commentRouter.post("/band/:id", tryCatch(CommentController.createForBand));

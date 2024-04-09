@@ -17,4 +17,7 @@ musicianRouter.get(
   "/:id/bands",
   tryCatch(MusicianController.getBandsFromMusician)
 );
-musicianRouter.get("/leader", tryCatch(MusicianController.getBandsFromLeader));
+musicianRouter.get(
+  "/leader/:id",
+  tryCatch(MusicianController.getBandsFromLeaderToInviteMusician)
+);

@@ -21,8 +21,8 @@ export class InvitationController {
 
   static async create(req: Request, res: Response) {
     const { id } = req.user;
-    const bandId = Number.parseInt(req.params.bandId);
-    const musicianId = Number.parseInt(req.params.musicianId);
+    const bandId = Number.parseInt(req.body.bandId);
+    const musicianId = Number.parseInt(req.body.musicianId);
 
     const { name } = await em.findOneOrFail(Band, { id: bandId, leader: id });
     const invited = await em.findOne(Invitation, {
@@ -78,12 +78,10 @@ export class InvitationController {
 
     em.remove(invitation);
     await em.flush();
-    res
-      .status(200)
-      .json({
-        message: `Invitación ${
-          accepted ? "aceptada" : "rechazada"
-        } correctamente`,
-      });
+    res.status(200).json({
+      message: `Invitación ${
+        accepted ? "aceptada" : "rechazada"
+      } correctamente`,
+    });
   }
 }

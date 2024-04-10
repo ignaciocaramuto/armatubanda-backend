@@ -6,6 +6,7 @@ import { Career } from "../models/career.entity.js";
 import { Invitation } from "../models/invitation.entity.js";
 import { Status } from "../enums/status.enum.js";
 import { MusicianBandStatus } from "../enums/musician-band-status.enum.js";
+import { Role } from "../enums/role.enum.js";
 
 const em = orm.em;
 export class MusicianController {
@@ -32,6 +33,8 @@ export class MusicianController {
     if (genres) filters.genres = { $in: (genres as string).split(",") };
     if (experience) filters.experience = <Experience>experience;
     if (lookingBands) filters.lookingBands = Boolean(lookingBands);
+    filters.isProfileSet = true;
+    filters.role = Role.USER;
 
     const musicians = await em.find(Musician, filters, {
       populate: ["instruments", "genres", "comments"],

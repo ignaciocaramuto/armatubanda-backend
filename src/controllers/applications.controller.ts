@@ -97,11 +97,15 @@ export class ApplicationController {
   }
 
   static async getAllFromBand(req: Request, res: Response) {
-    const id = Number.parseInt(req.params.id);
+    const { adId } = req.query;
 
-    const applications = await em.find(Application, {
-      advertisement: id,
-    });
+    const applications = await em.find(
+      Application,
+      {
+        advertisement: Number.parseInt(adId as string),
+      },
+      { populate: ["applicant"] }
+    );
     res.status(200).json(applications);
   }
 }

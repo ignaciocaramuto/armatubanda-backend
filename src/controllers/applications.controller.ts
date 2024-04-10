@@ -38,7 +38,7 @@ export class ApplicationController {
 
     const isMember = bandOfMusician?.members
       .getItems()
-      .some(({ id }) => id === id);
+      .some((musician) => musician.id === id);
 
     if (isMember || isLeader) {
       throw new AppError("El músico ya pertenece a la banda", 409);

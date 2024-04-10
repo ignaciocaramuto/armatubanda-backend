@@ -15,4 +15,24 @@ export class InstrumentController {
     await em.flush();
     res.status(201).json(instrument);
   }
+
+  static async update(req: Request, res: Response) {
+    const { name } = req.params;
+    const { newName } = req.body;
+
+    const instrument = await em.findOneOrFail(Instrument, { name });
+
+    em.assign(instrument, { name: newName });
+    await em.flush();
+    res.status(201).json(instrument);
+  }
+
+  static async delete(req: Request, res: Response) {
+    const { name } = req.params;
+
+    const instrument = await em.findOneOrFail(Instrument, { name });
+
+    await em.removeAndFlush(instrument);
+    res.status(201).json({ message: "Instrumento borrado correctamente" });
+  }
 }

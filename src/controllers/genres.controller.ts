@@ -15,4 +15,24 @@ export class GenreController {
     await em.flush();
     res.status(201).json(genre);
   }
+
+  static async update(req: Request, res: Response) {
+    const { name } = req.params;
+    const { newName } = req.body;
+
+    const genre = await em.findOneOrFail(Genre, { name });
+
+    em.assign(genre, { name: newName });
+    await em.flush();
+    res.status(201).json(genre);
+  }
+
+  static async delete(req: Request, res: Response) {
+    const { name } = req.params;
+
+    const genre = await em.findOneOrFail(Genre, { name });
+
+    await em.removeAndFlush(genre);
+    res.status(201).json({ message: "Instrumento borrado correctamente" });
+  }
 }

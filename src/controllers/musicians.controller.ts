@@ -53,34 +53,28 @@ export class MusicianController {
     res.status(200).json(musician);
   }
 
-  // Update entire entity
   static async createUpdateProfile(req: Request, res: Response) {
     const emFork = em.fork();
     const { id } = req.user;
+    const { instruments, genres, career } = req.body;
     const musician = await emFork.findOneOrFail(Musician, id);
 
-    const updated = new Musician();
-    Object.assign(updated, {
+    let updatedMusician = {
+      ...req.body,
+      instruments: instruments?.split(","),
+      genres: genres?.split(","),
       isProfileSet: true,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      stageName: req.body.stageName,
-      country: req.body.country,
-      state: req.body.state,
-      city: req.body.city,
-      bio: req.body.bio,
-      genres: req.body.genres,
-      instruments: req.body.instruments,
-      image: req.body.image,
-      phoneNumber: req.body.phoneNumber,
-      birthday: req.body.birthday,
-      webSite: req.body.webSite,
-      socialMedia: req.body.socialMedia,
-      imagePath: req.file?.path,
-    });
+    };
 
-    if (req.body.career) {
-      const careers = JSON.parse(req.body.career);
+    if (req.file?.path) {
+      updatedMusician = { ...updatedMusician, imagePath: req.file.path };
+    }
+
+    if (career) {
+      await musician.career.init();
+      await musician.career.removeAll();
+
+      const careers = JSON.parse(career);
       const careersMap = careers.map(
         ({ title, description, startDate, endDate }: any) => {
           const careerObj = new Career();
@@ -95,12 +89,15 @@ export class MusicianController {
         }
       );
 
-      Object.assign(updated, {
-        career: careersMap,
+      careersMap.forEach((career: Career) => {
+        musician.career.add(career);
       });
+
+      updatedMusician = { ...updatedMusician, career: musician.career };
     }
 
-    await emFork.assign(musician, updated);
+    emFork.assign(musician, updatedMusician);
+
     await emFork.flush();
     res.status(200).json(musician);
   }

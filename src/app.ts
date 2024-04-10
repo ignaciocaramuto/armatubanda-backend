@@ -17,6 +17,7 @@ import { advertisementRouter } from "./routes/advertisement.route.js";
 import { applicationRouter } from "./routes/applications.route.js";
 import { corsMiddleware } from "./middlewares/cors.middleware.js";
 import { invitationRouter } from "./routes/invitations.route.js";
+import { adminValidation } from "./middlewares/admin.middleware.js";
 
 const app = express();
 
@@ -29,8 +30,8 @@ app.use((req, res, next) => {
 app.use("/auth", authRouter);
 app.use("/musician", verifyToken, musicianRouter);
 app.use("/band", verifyToken, bandRouter);
-app.use("/instrument", verifyToken, instrumentRouter); // TODO: Only admin
-app.use("/genre", verifyToken, genreRouter); // TODO: Only admin
+app.use("/instrument", verifyToken, adminValidation, instrumentRouter); // TODO: Only admin
+app.use("/genre", verifyToken, adminValidation, genreRouter); // TODO: Only admin
 app.use("/post", verifyToken, postRouter);
 app.use("/comment", verifyToken, commentRouter);
 app.use("/images", express.static("images"));

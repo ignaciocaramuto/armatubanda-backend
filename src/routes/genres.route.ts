@@ -7,3 +7,5 @@ export const genreRouter = Router();
 
 genreRouter.get("/", tryCatch(GenreController.getAll));
 genreRouter.post("/", adminValidation, tryCatch(GenreController.create)); // TODO: Only admin
+genreRouter.put("/:name", tryCatch(GenreController.update));
+genreRouter.delete("/:name", tryCatch(GenreController.delete));

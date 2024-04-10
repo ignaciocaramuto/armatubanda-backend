@@ -11,3 +11,5 @@ instrumentRouter.post(
   adminValidation,
   tryCatch(InstrumentController.create)
 ); // TODO: Only admin
+instrumentRouter.put("/:name", tryCatch(InstrumentController.update));
+instrumentRouter.delete("/:name", tryCatch(InstrumentController.delete));

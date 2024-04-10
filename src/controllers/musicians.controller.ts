@@ -32,7 +32,7 @@ export class MusicianController {
       filters.instruments = { $in: (instruments as string).split(",") };
     if (genres) filters.genres = { $in: (genres as string).split(",") };
     if (experience) filters.experience = <Experience>experience;
-    if (lookingBands) filters.lookingBands = Boolean(lookingBands);
+    if (lookingBands) filters.lookingBands = JSON.parse(lookingBands as string);
     filters.isProfileSet = true;
     filters.role = Role.USER;
 
@@ -63,7 +63,7 @@ export class MusicianController {
       ...req.body,
       instruments: instruments?.split(","),
       genres: genres?.split(","),
-      lookingBands: Boolean(req.body.lookingBands),
+      lookingBands: JSON.parse(req.body.lookingBands),
       isProfileSet: true,
     };
 

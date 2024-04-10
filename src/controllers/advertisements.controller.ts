@@ -11,11 +11,10 @@ const em = orm.em;
 export class AdvertisementController {
   static async getAll(req: Request, res: Response) {
     const musicianId = req.user.id;
-    const { name, instruments, genres } = req.query;
+    const { instruments, genres } = req.query;
 
     const filters: Record<string, any> = {};
 
-    if (name) filters.name = { $like: `%${name}%` };
     if (instruments)
       filters.instruments = { $in: (instruments as string).split(",") };
     if (genres) filters.genres = { $in: (genres as string).split(",") };

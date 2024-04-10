@@ -21,7 +21,8 @@ export class BandController {
     if (state) filters.state = state;
     if (city) filters.city = city;
     if (genres) filters.genres = { $in: (genres as string).split(",") };
-    if (lookingMusicians) filters.lookingMusicians = Boolean(lookingMusicians);
+    if (lookingMusicians)
+      filters.lookingMusicians = JSON.parse(lookingMusicians as string);
 
     const bands = await em.find(Band, filters);
     res.status(200).json(bands);
@@ -63,7 +64,7 @@ export class BandController {
 
     let updatedBand = {
       ...req.body,
-      lookingMusicians: Boolean(req.body.lookingMusicians),
+      lookingMusicians: JSON.parse(req.body.lookingMusicians),
       genres: genres?.split(","),
     };
 

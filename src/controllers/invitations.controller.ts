@@ -57,7 +57,7 @@ export class InvitationController {
   static async update(req: Request, res: Response) {
     const { id } = req.user;
     const invitationId = Number.parseInt(req.params.id);
-    const accepted = Boolean(req.query.accepted);
+    const accepted = JSON.parse(req.query.accepted as string);
 
     const invitation = await em.findOneOrFail(Invitation, {
       id: invitationId,

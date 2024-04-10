@@ -42,9 +42,8 @@ export class BandController {
       ...req.body,
       leader: id,
       imagePath: req.file?.path,
+      genres: req.body.genres?.split(","),
     });
-
-    // genres doens't work
 
     await emFork.flush();
     res.status(201).json(band);

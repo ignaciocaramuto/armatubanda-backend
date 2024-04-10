@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { orm } from "../shared/db/orm.js";
 import { Band } from "../models/band.entity.js";
-import { Genre } from "../models/genre.entity.js";
 
 const em = orm.em;
 
@@ -15,7 +14,7 @@ export class BandController {
     if (country) filters.country = country;
     if (state) filters.state = state;
     if (city) filters.city = city;
-    if (genres) filters.genres = genres;
+    if (genres) filters.genres = { $in: (genres as string).split(",") };
     if (lookingMusicians) filters.lookingMusicians = Boolean(lookingMusicians);
 
     const bands = await em.find(Band, filters);

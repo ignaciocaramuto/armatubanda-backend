@@ -27,8 +27,9 @@ export class MusicianController {
     if (country) filters.country = country;
     if (state) filters.state = state;
     if (city) filters.city = city;
-    if (instruments) filters.instruments = { $in: instruments };
-    if (genres) filters.genres = { $in: genres };
+    if (instruments)
+      filters.instruments = { $in: (instruments as string).split(",") };
+    if (genres) filters.genres = { $in: (genres as string).split(",") };
     if (experience) filters.experience = <Experience>experience;
     if (lookingBands) filters.lookingBands = Boolean(lookingBands);
 

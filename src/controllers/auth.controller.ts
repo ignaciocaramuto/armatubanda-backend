@@ -49,6 +49,7 @@ export class AuthController {
       id: musician.id,
       token,
       email,
+      role: musician.role,
       isProfileSet: musician.isProfileSet,
       firstName: musician.firstName,
       lastName: musician.lastName,
@@ -59,11 +60,12 @@ export class AuthController {
   static async getCurrentMusician(req: Request, res: Response) {
     const { id } = req.user;
 
-    const { email, isProfileSet, firstName, lastName, imagePath } =
+    const { email, role, isProfileSet, firstName, lastName, imagePath } =
       await em.findOneOrFail(Musician, id);
     res.status(200).json({
       id,
       email,
+      role,
       isProfileSet,
       firstName,
       lastName,

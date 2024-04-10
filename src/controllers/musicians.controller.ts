@@ -34,7 +34,7 @@ export class MusicianController {
     if (lookingBands) filters.lookingBands = Boolean(lookingBands);
 
     const musicians = await em.find(Musician, filters, {
-      populate: ["instruments", "genres"],
+      populate: ["instruments", "genres", "comments"],
     });
     res.status(200).json(musicians);
   }

@@ -24,65 +24,61 @@ export class AdvertisementController {
       populate: ["band", "applications"],
     });
 
-    const ads = advertisements.map(
-      ({
-        id,
-        title,
-        description,
-        band,
-        applications,
-        createdAt,
-        genres,
-        instruments,
-      }: Advertisement) => {
-        let isMember = false;
-        let hasPendingApplication = false;
-        let hasPendingInvitation = false;
+    const ads = await Promise.all(
+      advertisements.map(
+        async ({
+          id,
+          title,
+          description,
+          band,
+          applications,
+          createdAt,
+          genres,
+          instruments,
+        }: Advertisement) => {
+          await band.members.init();
+          await applications.init();
+          await band.invitations.init();
 
-        const isLeader = band.leader.id === musicianId;
+          const isLeader = band.leader.id === musicianId;
 
-        if (band.members.isInitialized()) {
-          isMember = band.members
+          const isMember = band.members
             .getItems()
             .some((musician: Musician) => musician.id === musicianId);
-        }
 
-        if (applications.isInitialized()) {
-          hasPendingApplication = applications
+          const hasPendingApplication = applications
             .getItems()
             .some(
               ({ applicant, status }) =>
                 applicant.id === musicianId && status === Status.PENDING
             );
-        }
 
-        if (band.invitations.isInitialized()) {
-          hasPendingInvitation = band.invitations
+          const hasPendingInvitation = band.invitations
             .getItems()
             .some(({ musician }) => musician.id === musicianId);
+
+          let status = AdvertisementStatus.ELIGIGLE;
+
+          if (isMember || isLeader) {
+            status = AdvertisementStatus.MEMBER;
+          } else if (hasPendingApplication) {
+            status = AdvertisementStatus.PENDING_APPLICATION;
+          } else if (hasPendingInvitation) {
+            status = AdvertisementStatus.PENDING_INVITATION;
+          }
+
+          return {
+            id,
+            title,
+            description,
+            createdAt,
+            band,
+            genres,
+            instruments,
+            status,
+          };
         }
-
-        let status = AdvertisementStatus.ELIGIGLE;
-
-        if (isMember || isLeader) {
-          status = AdvertisementStatus.MEMBER;
-        } else if (hasPendingApplication) {
-          status = AdvertisementStatus.PENDING_APPLICATION;
-        } else if (hasPendingInvitation) {
-          status = AdvertisementStatus.PENDING_INVITATION;
-        }
-
-        return {
-          id,
-          title,
-          description,
-          createdAt,
-          band,
-          genres,
-          instruments,
-          status,
-        };
-      }
+      )
     );
 
     res.status(200).json(ads);

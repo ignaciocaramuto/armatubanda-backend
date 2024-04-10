@@ -143,32 +143,33 @@ export class MusicianController {
       pendingInvitationsMap[invitation.band.id] = true;
     });
 
-    const bands = ledBands.map((band) => {
-      let isMember = false;
-      if (band.members.isInitialized()) {
-        isMember = band.members
+    const bands = await Promise.all(
+      ledBands.map(async (band) => {
+        await band.members.init();
+
+        const isMember = band.members
           .getItems()
           .some(({ id }: Musician) => id === musicianToInviteId);
-      }
 
-      const hasPendingInvitation = pendingInvitationsMap[band.id] || false;
+        const hasPendingInvitation = pendingInvitationsMap[band.id] || false;
 
-      let status = "";
-      if (isMember) {
-        status = MusicianBandStatus.MEMBER;
-      } else if (hasPendingInvitation) {
-        status = MusicianBandStatus.PENDING_INVITATION;
-      } else {
-        status = MusicianBandStatus.NOT_MEMBER;
-      }
+        let status = "";
+        if (isMember) {
+          status = MusicianBandStatus.MEMBER;
+        } else if (hasPendingInvitation) {
+          status = MusicianBandStatus.PENDING_INVITATION;
+        } else {
+          status = MusicianBandStatus.NOT_MEMBER;
+        }
 
-      return {
-        id: band.id,
-        name: band.name,
-        imagePath: band.imagePath,
-        status: status,
-      };
-    });
+        return {
+          id: band.id,
+          name: band.name,
+          imagePath: band.imagePath,
+          status: status,
+        };
+      })
+    );
 
     res.status(200).json(bands);
   }

@@ -34,11 +34,11 @@ export class ApplicationController {
     const bandOfMusician = await em.findOne(Band, { id: band.id });
     const isLeader = await em.findOne(Band, { id: band.id, leader: id });
 
-    let isMember = false;
+    await bandOfMusician?.members.init();
 
-    if (bandOfMusician?.members.isInitialized()) {
-      isMember = bandOfMusician.members.getItems().some(({ id }) => id === id);
-    }
+    const isMember = bandOfMusician?.members
+      .getItems()
+      .some(({ id }) => id === id);
 
     if (isMember || isLeader) {
       throw new AppError("El músico ya pertenece a la banda", 409);
@@ -67,11 +67,7 @@ export class ApplicationController {
     });
 
     const { members } = band;
-
-    if (!members.isInitialized()) {
-      await members.init();
-    }
-
+    await members.init();
     members.add(application.applicant);
 
     await em.assign(application, { status: Status.ACCEPTED });

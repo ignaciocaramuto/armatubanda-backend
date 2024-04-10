@@ -68,9 +68,7 @@ export class InvitationController {
       const band = await em.findOneOrFail(Band, { id: invitation.band.id });
       const { members } = band;
 
-      if (!members.isInitialized()) {
-        await members.init();
-      }
+      await members.init();
 
       members.add(invitation.musician);
       await em.assign(band, { members });

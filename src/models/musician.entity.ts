@@ -85,6 +85,7 @@ export class Musician extends BaseEntity {
   @OneToMany(() => Career, (career) => career.musician, {
     cascade: [Cascade.ALL],
     nullable: true,
+    orphanRemoval: true, // This is to automatically delete the entity/entities from the database
   })
   career = new Collection<Career>(this);
 

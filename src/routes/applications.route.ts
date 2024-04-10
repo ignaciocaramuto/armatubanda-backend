@@ -9,4 +9,8 @@ applicationRouter.patch(
   "/accept/:bandId/:id",
   tryCatch(ApplicationController.accept)
 );
-applicationRouter.get("/:id", tryCatch(ApplicationController.getAllFromBand));
+applicationRouter.patch(
+  "/reject/:bandId/:id",
+  tryCatch(ApplicationController.reject)
+);
+applicationRouter.get("/", tryCatch(ApplicationController.getAllFromBand));

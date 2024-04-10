@@ -19,7 +19,7 @@ export class MusicianController {
       instruments,
       genres,
       experience,
-      lookingBands,
+      lookingBand,
     } = req.query;
 
     const filters: Record<string, any> = {};
@@ -32,7 +32,7 @@ export class MusicianController {
       filters.instruments = { $in: (instruments as string).split(",") };
     if (genres) filters.genres = { $in: (genres as string).split(",") };
     if (experience) filters.experience = <Experience>experience;
-    if (lookingBands) filters.lookingBands = JSON.parse(lookingBands as string);
+    if (lookingBand) filters.lookingBands = JSON.parse(lookingBand as string);
     filters.isProfileSet = true;
     filters.role = Role.USER;
 

@@ -63,6 +63,7 @@ export class MusicianController {
       ...req.body,
       instruments: instruments?.split(","),
       genres: genres?.split(","),
+      lookingBands: Boolean(req.body.lookingBands),
       isProfileSet: true,
     };
 

@@ -4,15 +4,9 @@ import { AdvertisementController } from "../controllers/advertisements.controlle
 
 export const advertisementRouter = Router();
 
-advertisementRouter.get(
-  "/:id",
-  tryCatch(AdvertisementController.getAllFromBand)
-);
+advertisementRouter.get("/", tryCatch(AdvertisementController.getAllFromBand));
 advertisementRouter.post("/:id", tryCatch(AdvertisementController.create));
-advertisementRouter.delete(
-  "/:bandId/:id",
-  tryCatch(AdvertisementController.delete)
-);
+advertisementRouter.delete("/:id", tryCatch(AdvertisementController.delete));
 advertisementRouter.get(
   "/:bandId/:id",
   tryCatch(AdvertisementController.getApplications)

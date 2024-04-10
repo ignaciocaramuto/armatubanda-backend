@@ -18,3 +18,4 @@ bandRouter.put(
   tryCatch(BandController.edit)
 );
 bandRouter.delete("/leave/:id", tryCatch(BandController.leave));
+bandRouter.delete("/:id", tryCatch(BandController.remove));

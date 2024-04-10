@@ -3,6 +3,10 @@ import { orm } from "../shared/db/orm.js";
 import { Band } from "../models/band.entity.js";
 import { AppError } from "../utils/app-error.js";
 import { Application } from "../models/application.entity.js";
+import { Advertisement } from "../models/advertisement.entity.js";
+import { Invitation } from "../models/invitation.entity.js";
+import { Post } from "../models/post.entity.js";
+import { Comment } from "../models/comment.entity.js";
 
 const em = orm.em;
 
@@ -94,5 +98,22 @@ export class BandController {
     await em.remove(application);
     await em.flush();
     res.status(201).json({ message: "¡Banda dejada correctamente!" });
+  }
+
+  static async remove(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const band = await em.findOneOrFail(Band, { id: Number.parseInt(id) });
+    const advertisements = await em.find(Advertisement, { band: band.id });
+    const invitations = await em.find(Invitation, { band: band.id });
+    const posts = await em.find(Post, { band: band.id });
+    const comments = await em.find(Comment, { band: band.id });
+
+    em.remove(advertisements);
+    em.remove(invitations);
+    em.remove(posts);
+    em.remove(comments);
+    await em.removeAndFlush(band);
+    res.status(200).json({ message: "Banda borrada correctamente" });
   }
 }

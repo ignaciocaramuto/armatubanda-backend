@@ -31,8 +31,14 @@ export class ApplicationController {
       { populate: ["band.id"] }
     );
 
-    const isMember = await em.findOne(Band, { id: band.id, members: id });
+    const bandOfMusician = await em.findOne(Band, { id: band.id });
     const isLeader = await em.findOne(Band, { id: band.id, leader: id });
+
+    let isMember = false;
+
+    if (bandOfMusician?.members.isInitialized()) {
+      isMember = bandOfMusician.members.getItems().some(({ id }) => id === id);
+    }
 
     if (isMember || isLeader) {
       throw new AppError("El músico ya pertenece a la banda", 409);

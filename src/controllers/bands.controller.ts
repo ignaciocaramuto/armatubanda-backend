@@ -53,11 +53,22 @@ export class BandController {
   static async edit(req: Request, res: Response) {
     const emFork = em.fork();
     const { id } = req.user;
+    const { genres } = req.body;
     const bandId = Number.parseInt(req.params.id);
 
     const band = await emFork.findOneOrFail(Band, { id: bandId, leader: id });
 
-    await emFork.assign(band, { ...req.body, imagePath: req.file?.path });
+    let updatedBand = {
+      ...req.body,
+      lookingMusicians: Boolean(req.body.lookingMusicians),
+      genres: genres?.split(","),
+    };
+
+    if (req.file?.path) {
+      updatedBand = { ...updatedBand, imagePath: req.file.path };
+    }
+
+    await emFork.assign(band, updatedBand);
     await emFork.flush();
     res.status(201).json(band);
   }

@@ -4,7 +4,11 @@ import { AdvertisementController } from "../controllers/advertisements.controlle
 
 export const advertisementRouter = Router();
 
-advertisementRouter.get("/", tryCatch(AdvertisementController.getAllFromBand));
+advertisementRouter.get("/", tryCatch(AdvertisementController.getAll));
+advertisementRouter.get(
+  "/:id",
+  tryCatch(AdvertisementController.getAllFromBand)
+);
 advertisementRouter.post("/:id", tryCatch(AdvertisementController.create));
 advertisementRouter.delete("/:id", tryCatch(AdvertisementController.delete));
 advertisementRouter.get(

@@ -9,3 +9,4 @@ applicationRouter.patch(
   "/accept/:bandId/:id",
   tryCatch(ApplicationController.accept)
 );
+applicationRouter.get("/:id", tryCatch(ApplicationController.getAllFromBand));

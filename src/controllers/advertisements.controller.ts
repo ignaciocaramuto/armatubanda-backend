@@ -9,7 +9,7 @@ import { AdvertisementStatus } from "../enums/advertisement-status.js";
 const em = orm.em;
 
 export class AdvertisementController {
-  static async getAllFromBand(req: Request, res: Response) {
+  static async getAll(req: Request, res: Response) {
     const musicianId = req.user.id;
     const { name, instruments, genres } = req.query;
 
@@ -128,5 +128,12 @@ export class AdvertisementController {
     res
       .status(200)
       .json(applications.filter(({ status }) => status === Status.PENDING));
+  }
+
+  static async getAllFromBand(req: Request, res: Response) {
+    const id = Number.parseInt(req.params.id);
+
+    const ads = await em.find(Advertisement, { band: id });
+    res.status(200).json(ads);
   }
 }

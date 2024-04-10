@@ -95,4 +95,13 @@ export class ApplicationController {
     await em.flush();
     res.status(200).json({ message: "Solicitud rechazada correctamente." });
   }
+
+  static async getAllFromBand(req: Request, res: Response) {
+    const id = Number.parseInt(req.params.id);
+
+    const applications = await em.find(Application, {
+      advertisement: id,
+    });
+    res.status(200).json(applications);
+  }
 }

@@ -26,7 +26,7 @@ export class BandController {
     const band = await em.findOneOrFail(
       Band,
       { id },
-      { populate: ["genres", "leader"] }
+      { populate: ["genres", "leader", "members"] }
     );
 
     res.status(200).json(band);

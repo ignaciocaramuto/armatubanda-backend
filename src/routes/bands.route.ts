@@ -17,3 +17,4 @@ bandRouter.put(
   uploadFile.single("image"),
   tryCatch(BandController.edit)
 );
+bandRouter.delete("/leave/:id", tryCatch(BandController.leave));

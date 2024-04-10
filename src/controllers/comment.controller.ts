@@ -7,13 +7,21 @@ const em = orm.em;
 export class CommentController {
   static async getAllFromMusician(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
-    const comments = await em.find(Comment, { musician: id });
+    const comments = await em.find(
+      Comment,
+      { musician: id },
+      { populate: ["author"] }
+    );
     res.status(200).json(comments);
   }
 
   static async getAllFromBand(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
-    const comments = await em.find(Comment, { band: id });
+    const comments = await em.find(
+      Comment,
+      { band: id },
+      { populate: ["author"] }
+    );
     res.status(200).json(comments);
   }
 
